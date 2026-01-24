@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -20,17 +22,6 @@ final class AppServiceProvider extends ServiceProvider
         Scramble::ignoreDefaultRoutes();
         Scramble::registerUiRoute('docs');
         Scramble::registerJsonSpecificationRoute('api.json');
-
-        // Enable in all environments (or add condition: if (app()->environment('local', 'production')))
-        Scramble::extendOpenApi(function ($openApi) {
-            $openApi->secure(
-                Scramble::defineSecurityScheme('api_key', [
-                    'type' => 'apiKey',
-                    'in' => 'header',
-                    'name' => 'Authorization',
-                ])
-            );
-        });
     }
 
     /**
@@ -38,6 +29,13 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Enable Scramble docs in all environments (including production)
+        Scramble::afterOpenApiGenerated(function (OpenApi $openApi): void {
+            $openApi->secure(
+                SecurityScheme::http('bearer')
+            );
+        });
+
         $this->configureRateLimiting();
     }
 
