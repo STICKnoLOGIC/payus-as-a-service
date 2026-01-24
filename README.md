@@ -18,6 +18,10 @@ Built for thick-faced, Ghost and shameless clients.
 
 <!-- sponsor here -->
 <!-- GitAds-Verify: AKZ9GHHCV9DNI2JZ17D3P7598WKKVQAL -->
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=sticknologic/payus-as-a-service@github)](https://gitads.dev/v1/ad-track?source=sticknologic/payus-as-a-service@github)
+
+
 ## API Usage
 Base URL
 ```
