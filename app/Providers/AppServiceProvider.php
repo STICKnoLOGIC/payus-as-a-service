@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Dedoc\Scramble\Scramble;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -17,9 +16,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Scramble::ignoreDefaultRoutes();
-        Scramble::registerUiRoute('docs');
-        Scramble::registerJsonSpecificationRoute('api.json');
+        //
     }
 
     /**
@@ -27,11 +24,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Override Scramble's default middleware to allow access in all environments
-        config([
-            'scramble.middleware' => ['web'],
-        ]);
-
         $this->configureRateLimiting();
     }
 
