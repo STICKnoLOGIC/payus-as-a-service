@@ -1,20 +1,23 @@
-![Banner](https://cdn.sticknologic.is-a.dev/payus-aas/banner.png)
+<p align="center">
+  <img src="https://cdn.sticknologic.is-a.dev/payus-aas/banner.png" width="800" alt="Banner" width="70%"/>
+</p>
 
 # 💸 PayUs-as-a-Service
 [![PHP Version](https://img.shields.io/badge/PHP-8.3%2B-blue)](https://php.net)
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red)](https://laravel.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-Does it come to your career/life that you need to collect something they owe you? or are you shy or out of word and dont know how and what to said?
+Does it ever happen in your career or personal life that you need to collect money someone owes you? Are you shy, out of words, or don't know how to ask or what tone to use?
 
-You dont know what tone are you going to use. is Profesional, Friendly, Frank, Funny or Playful?
+Should it be Professional, Friendly, Frank, Funny, or Playful?
 
-This project will perfectly solve(I hope) the questions above.
+This project will perfectly solve (I hope) the questions above.
 
 ## About
-PayUs-as-a-Service (PUaaS) is an API that returns randomized messages for past-due invoices — Perfectly suited for any scenario: personal, Professional, dev life or just your life.
 
-Built for thick-faced, Ghost and shameless clients.
+PayUs-as-a-Service (PUaaS) is an API that returns randomized messages for past-due invoices — perfectly suited for any scenario: personal, professional, dev life, or just your everyday life.
+
+Built for thick-faced, ghost, and shameless clients.
 
 <!-- sponsor here -->
 <!-- GitAds-Verify: AKZ9GHHCV9DNI2JZ17D3P7598WKKVQAL -->
@@ -23,20 +26,29 @@ Built for thick-faced, Ghost and shameless clients.
 
 
 ## API Usage
-Base URL
-```
-https://puaas.sticknologic.is-a.dev
-```
-Method: `GET`
 
-Rate Limit: `60 requests per minute per IP`
+**Live API:** https://puaas.sticknologic.is-a.dev
 
-### Example Request
-```
-GET /payus
-```
+**Interactive Documentation:** https://puaas.sticknologic.is-a.dev/docs
 
-### Example Response
+**Method:** `GET`
+
+**Rate Limit:** `60 requests per minute per IP`
+
+### API Endpoints
+| Method | Endpoint            | Auth | Description                             | Rate Limit |
+|--------|---------------------|------|-----------------------------------------|------------|
+| GET    | /payus              | No   | Get a randomized message in random tone | 60/min     |
+| GET    | /payus/professional | No   | Get random professional message         | 60/min     |
+| GET    | /payus/frank        | No   | Get random frank message                | 60/min     |
+| GET    | /payus/friendly     | No   | Get random friendly message             | 60/min     |
+| GET    | /payus/playful      | No   | Get random playful message              | 60/min     |
+| GET    | /payus/funny        | No   | Get random funny message                | 60/min     |
+| GET    | /payus/tones        | No   | Get available tones                     | 60/min     |
+
+### Example Responses
+
+**Success Response:**
 ```json
 {
   "message": "string",
@@ -44,63 +56,144 @@ GET /payus
 }
 ```
 
-For more info, read our docs: https://puaas.sticknologic.is-a.dev/docs
+**Error Response:**
+```json
+{
+  "success": false,
+  "message": "No messages found for the specified criteria.",
+  "errors": "string"
+}
+```
+
+**Available Tones Response:**
+```json
+{
+  "success": true,
+  "message": "Success",
+  "data": {
+    "tones": {
+      "professional": "Professional",
+      "friendly": "Friendly",
+      "frank": "Frank",
+      "funny": "Funny",
+      "playful": "Playful"
+    }
+  }
+}
+```
+
+---
+
+## Quick Start
+
+### Try It Now (No Installation Required)
+
+Test the API directly from your terminal:
+
+```bash
+# Get a random message with any tone
+curl https://puaas.sticknologic.is-a.dev/payus
+
+# Get a professional tone message
+curl https://puaas.sticknologic.is-a.dev/payus/professional
+
+# Get all available tones
+curl https://puaas.sticknologic.is-a.dev/payus/tones
+```
+
+For complete API documentation with interactive examples, visit: **https://puaas.sticknologic.is-a.dev/docs**
+
+---
 
 ## Self-Hosting
 
-Want to run it yourself? It’s lightweight and simple.
+Want to run your own instance? It's lightweight and simple to set up.
 
 ### Requirements
 
-- Docker & Docker Compose
-- Or: PHP 8.3+, Composer 2.x
+Choose one of the following:
 
-### With Docker (Recommended)
+- **Option 1 (Recommended for Beginners):** Docker & Docker Compose
+- **Option 2 (Advanced Users):** PHP 8.3+, Composer 2.x, MySQL/SQLite
 
+### Installation with Docker (Recommended)
+
+**Step 1:** Clone the repository
 ```bash
-# Clone the repository
 git clone https://github.com/sticknologic/payus-as-a-service.git
 cd payus-as-a-service
+```
 
-# Copy environment file
+**Step 2:** Set up environment files
+```bash
 cp .env.example .env
+cp sample.env.db .env.db
+```
 
-# Build and start containers
+**Step 3:** Build and start Docker containers
+```bash
 docker compose build
 docker compose up -d
+```
 
-# Install dependencies
+**Step 4:** Install PHP dependencies
+```bash
 docker compose run --rm app composer install
+```
 
-# Generate application key
+**Step 5:** Generate application security key
+```bash
 docker compose run --rm app php artisan key:generate
+```
 
-# Run migrations
+**Step 6:** Set up database with sample messages (includes 1,500 messages across all tones)
+```bash
 docker compose run --rm app php artisan migrate:fresh --seed --force
+```
 
-# Run tests to verify installation
+**Step 7:** Run tests to verify everything works
+```bash
 docker compose run --rm app ./vendor/bin/pest
 ```
 
-### Without Docker
+**Step 8:** Access your API
+- API: `http://localhost:9006/payus`
+- Documentation: `http://localhost:9006/docs`
 
+### Installation without Docker (Advanced)
+
+**Step 1:** Clone and install dependencies
 ```bash
-# Clone and install
 git clone https://github.com/sticknologic/payus-as-a-service.git
 cd payus-as-a-service
 composer install
+```
 
-# Configure
+**Step 2:** Configure environment
+```bash
 cp .env.example .env
 php artisan key:generate
+```
 
-# Database (SQLite by default)
+**Step 3:** Set up database (SQLite by default - easiest option)
+```bash
 touch database/database.sqlite
 php artisan migrate:fresh --seed --force
+```
 
-# Verify
+**Step 4:** Run tests to verify
+```bash
 ./vendor/bin/pest
 ```
+
+**Step 5:** Start the development server
+```bash
+php artisan serve
+```
+
+**Step 6:** Access your API
+- API: `http://localhost:8000/payus`
+- Documentation: `http://localhost:8000/docs`
 
 ### HTTP Status Codes
 
@@ -164,93 +257,157 @@ laravel-api-kit/
 
 ## Development Commands
 
+**View all available API routes:**
 ```bash
-# List all routes
 docker compose run --rm app php artisan route:list
+```
 
-# Clear all caches
+**Clear all caches (useful after config changes):**
+```bash
 docker compose run --rm app php artisan optimize:clear
+```
 
-# Generate IDE helper files (if using Laravel IDE Helper)
+**Run code quality checks (Pint, Rector, PHPStan, Tests):**
+```bash
+docker compose run --rm app composer test
+```
+
+**Generate IDE helper files (improves autocomplete in your editor):**
+```bash
 docker compose run --rm app php artisan ide-helper:generate
 docker compose run --rm app php artisan ide-helper:models -N
+```
 
-# Export OpenAPI spec to file
+**Export OpenAPI specification to file:**
+```bash
 docker compose run --rm app php artisan scramble:export
 ```
 
 ## Environment Configuration
 
-Key `.env` variables:
+Key `.env` variables for self-hosting:
 
 ```env
-# Application
-APP_NAME="Laravel API Kit"
-APP_ENV=local
-APP_DEBUG=true
-APP_URL=http://localhost:8080
+# Application Settings
+APP_NAME="PayUs-as-a-Service"
+APP_ENV=local                    # Use 'production' for live deployment
+APP_DEBUG=true                   # Set to 'false' in production
+APP_URL=http://localhost:9006    # Your API URL
 
-# Database (SQLite for development)
+# Database (SQLite for development - easiest option)
 DB_CONNECTION=sqlite
 DB_DATABASE=/var/www/database/database.sqlite
 
-# For MySQL/PostgreSQL
+# For MySQL/PostgreSQL (recommended for production)
 # DB_CONNECTION=mysql
 # DB_HOST=mysql
 # DB_PORT=3306
-# DB_DATABASE=laravel_api_kit
-# DB_USERNAME=laravel
-# DB_PASSWORD=secret
+# DB_DATABASE=payus_db
+# DB_USERNAME=your_username
+# DB_PASSWORD=your_password
 
-# Sanctum
-SANCTUM_STATEFUL_DOMAINS=localhost,localhost:3000,127.0.0.1
-
-# API Versioning
+# API Configuration
 API_VERSION_STRATEGY=uri
 API_DEFAULT_VERSION=latest
 
-# Rate Limiting
+# Rate Limiting (requests per minute per IP)
 API_RATE_LIMIT=60
-
-# Documentation
-API_DOCS_URL=http://localhost:8080/docs/api
 ```
 
-## Deployment
+## Deployment to Production
 
 ### Production Checklist
 
-- [ ] Set `APP_ENV=production` and `APP_DEBUG=false`
-- [ ] Configure proper database (MySQL/PostgreSQL)
-- [ ] Set `APP_URL` to your production URL
-- [ ] Configure `SANCTUM_STATEFUL_DOMAINS` for your frontend domains
-- [ ] Review and tighten CORS settings in `config/cors.php`
-- [ ] Set up proper rate limiting for production load
-- [ ] Configure caching (Redis recommended)
-- [ ] Set up queue worker for background jobs
-- [ ] Enable HTTPS and update URLs
+- [ ] Set `APP_ENV=production` and `APP_DEBUG=false` in `.env`
+- [ ] Configure a production database (MySQL/PostgreSQL recommended)
+- [ ] Set `APP_URL` to your actual domain (e.g., `https://api.yourdomain.com`)
+- [ ] Review and adjust CORS settings in `config/cors.php`
+- [ ] Adjust rate limiting in `config/apiroute.php` based on your needs
+- [ ] Set up Redis for caching (optional but recommended)
+- [ ] Configure queue workers for background jobs (if needed)
+- [ ] Enable HTTPS/SSL certificates
+- [ ] Set up proper monitoring and logging
 
-### Docker Production
+### Quick Deploy with Docker
 
-```dockerfile
-# Example production Dockerfile additions
-FROM php:8.3-fpm-alpine
+Your `docker-compose.yml` already includes Nginx for production use.
 
-# Install opcache for performance
-RUN docker-php-ext-install opcache
+**Step 1:** Update `.env` and `.env.db` with production settings
 
-# Production PHP settings
-COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/
-COPY docker/php/php.ini /usr/local/etc/php/conf.d/
+**Step 2:** Build and start containers
+```bash
+docker compose up -d --build
 ```
+
+**Step 3:** Your API will be available on port 9006
+
+**Step 4:** Point your reverse proxy (Caddy/Nginx) to the container
+
+**Example Caddy configuration:**
+```
+api.yourdomain.com {
+    reverse_proxy localhost:9006
+}
+```
+
+**Example Nginx configuration:**
+```nginx
+server {
+    listen 80;
+    server_name api.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:9006;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## Projects Using PayUs-as-a-Service
+
+Here are some projects made by our **BRAVE** developers that integrate PayUs-as-a-Service to deliver their dismay, despair, and disappointment via past-due invoice messages:
+
+- **Your Project Here?** If you're using PayUs-as-a-Service in your project, [open a pull request](https://github.com/sticknologic/payus-as-a-service/pulls) to be featured here!
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Here's how you can help:
+
+**Step 1:** Fork the repository
+
+**Step 2:** Create your feature branch
+```bash
+git checkout -b feature/amazing-feature
+```
+
+**Step 3:** Make your changes and test them
+```bash
+composer test
+```
+
+**Step 4:** Commit your changes
+```bash
+git commit -m 'Add amazing feature'
+```
+
+**Step 5:** Push to the branch
+```bash
+git push origin feature/amazing-feature
+```
+
+**Step 6:** Open a Pull Request
+
+### Ideas for Contributions
+- Add more message variations to `messages.json`
+- Improve documentation
+- Add new language translations
+- Fix bugs or improve performance
+- Add new API features or tone categories
+
+## Author
+
+Created with a broken heart and torn wallet by [STICKnoLOGIC](https://sticknologic.is-a.dev)
 
 ## License
 
@@ -265,8 +422,12 @@ This project is open-sourced software licensed under the [MIT license](LICENSE).
 - [dedoc/scramble](https://github.com/dedoc/scramble) - API Documentation
 - [Pest PHP](https://pestphp.com) - Testing Framework
 
-## Support
+## Support & Help
 
-- [Documentation](https://github.com/sticknologic/payus-as-a-service/wiki)
-- [Issues](https://github.com/sticknologic/payus-as-a-service/issues)
-- [Discussions](https://sticknologic/payus-as-a-service/discussions)
+Need help? Here are your options:
+
+- **📚 Interactive API Docs:** [https://puaas.sticknologic.is-a.dev/docs](https://puaas.sticknologic.is-a.dev/docs)
+- **📖 Wiki & Guides:** [GitHub Wiki](https://github.com/sticknologic/payus-as-a-service/wiki)
+- **🐛 Bug Reports:** [GitHub Issues](https://github.com/sticknologic/payus-as-a-service/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/sticknologic/payus-as-a-service/discussions)
+- **❓ Questions:** Open a [discussion](https://github.com/sticknologic/payus-as-a-service/discussions/new?category=q-a)
