@@ -30,4 +30,14 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user \
 
 WORKDIR /var/www
 
+# Copy application files
+COPY --chown=$user:www-data . /var/www
+
+# Set correct permissions for Laravel directories
+RUN chown -R $user:www-data /var/www \
+    && find /var/www -type f -exec chmod 644 {} \; \
+    && find /var/www -type d -exec chmod 755 {} \; \
+    && chmod -R 775 /var/www/storage \
+    && chmod -R 775 /var/www/bootstrap/cache
+
 USER $user
