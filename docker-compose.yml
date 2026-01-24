@@ -26,11 +26,5 @@ services:
     image: mysql:latest
     container_name: mysql-puaas
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: Aerial80@puaas
-      MYSQL_DATABASE: db_puaas
-      MYSQL_USER: sticknologic
-      MYSQL_PASSWORD: Aerial80@puaas
-
-
-
+    env_file:
+      - .env.db
