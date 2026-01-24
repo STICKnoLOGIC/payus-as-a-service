@@ -21,3 +21,5 @@ Route::get('/', function (): Factory|View {
 
     return view('welcome', ['content' => $content]);
 });
+
+Route::get('/docs', fn () => response()->file(public_path('docs.html')));

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayUs-as-a-Service API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            margin: 5px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #28a745;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+
+        .path {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .try-it {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .try-it button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .try-it button:hover {
+            background: #5568d3;
+        }
+
+        .try-it button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .response {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            display: none;
+        }
+
+        .response.show {
+            display: block;
+        }
+
+        .response pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .tone-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tone-btn {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .tone-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .tone-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .example-code {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .example-code pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💸 PayUs-as-a-Service</h1>
+            <p>Interactive API Documentation</p>
+            <div>
+                <span class="badge">REST API</span>
+                <span class="badge">No Auth Required</span>
+                <span class="badge">60 req/min</span>
+                <span class="badge">1,500+ Messages</span>
+            </div>
+        </header>
+
+        <div class="section">
+            <h2>📖 Introduction</h2>
+            <p>PayUs-as-a-Service (PUaaS) is a free API that generates randomized payment reminder messages in various tones. Perfect for developers who need to send past-due invoice reminders but want to maintain different communication styles.</p>
+            
+            <div class="info-box">
+                <strong>Base URL:</strong> <code>https://puaas.sticknologic.is-a.dev</code><br>
+                <strong>Method:</strong> GET<br>
+                <strong>Authentication:</strong> None required<br>
+                <strong>Rate Limit:</strong> 60 requests per minute per IP
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎭 Available Tones</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tone</th>
+                        <th>Description</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Professional</strong></td>
+                        <td>Formal, business-like language</td>
+                        <td>Corporate clients, B2B invoices</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Friendly</strong></td>
+                        <td>Warm and approachable</td>
+                        <td>Regular customers, long-term clients</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frank</strong></td>
+                        <td>Direct and straightforward</td>
+                        <td>Clear communication, no-nonsense clients</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Funny</strong></td>
+                        <td>Humorous and lighthearted</td>
+                        <td>Informal relationships, creative industries</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Playful</strong></td>
+                        <td>Witty and engaging</td>
+                        <td>Casual clients, modern businesses</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🚀 API Endpoints</h2>
+
+            <!-- Random Message -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random payment reminder message with a random tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus', 'random')">
+                        Send Request
+                    </button>
+                    <div id="response-random" class="response"></div>
+                </div>
+
+                <div class="example-code">
+                    <strong>Example Response:</strong>
+                    <pre>{
+  "message": "Just a gentle reminder about your outstanding invoice.",
+  "tone": "Friendly"
+}</pre>
+                </div>
+            </div>
+
+            <!-- Professional -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/professional</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random message with a professional tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/professional', 'professional')">
+                        Send Request
+                    </button>
+                    <div id="response-professional" class="response"></div>
+                </div>
+            </div>
+
+            <!-- Friendly -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/friendly</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random message with a friendly tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/friendly', 'friendly')">
+                        Send Request
+                    </button>
+                    <div id="response-friendly" class="response"></div>
+                </div>
+            </div>
+
+            <!-- Frank -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/frank</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random message with a frank (direct) tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/frank', 'frank')">
+                        Send Request
+                    </button>
+                    <div id="response-frank" class="response"></div>
+                </div>
+            </div>
+
+            <!-- Funny -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/funny</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random message with a humorous tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/funny', 'funny')">
+                        Send Request
+                    </button>
+                    <div id="response-funny" class="response"></div>
+                </div>
+            </div>
+
+            <!-- Playful -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/playful</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a random message with a playful tone.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/playful', 'playful')">
+                        Send Request
+                    </button>
+                    <div id="response-playful" class="response"></div>
+                </div>
+            </div>
+
+            <!-- Get Tones -->
+            <div class="endpoint">
+                <div>
+                    <span class="method">GET</span>
+                    <span class="path">/payus/tones</span>
+                </div>
+                <p style="margin: 10px 0 0 0;">Get a list of all available tones.</p>
+                
+                <div class="try-it">
+                    <h3>Try it now</h3>
+                    <button onclick="makeRequest('/payus/tones', 'tones')">
+                        Send Request
+                    </button>
+                    <div id="response-tones" class="response"></div>
+                </div>
+
+                <div class="example-code">
+                    <strong>Example Response:</strong>
+                    <pre>{
+  "success": true,
+  "message": "Success",
+  "data": {
+    "tones": {
+      "professional": "Professional",
+      "friendly": "Friendly",
+      "frank": "Frank",
+      "funny": "Funny",
+      "playful": "Playful"
+    }
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚠️ Error Responses</h2>
+            
+            <h3>404 - Not Found</h3>
+            <div class="example-code">
+                <pre>{
+  "success": false,
+  "message": "No messages found for the specified criteria.",
+  "errors": "Resource not found"
+}</pre>
+            </div>
+
+            <h3>429 - Rate Limit Exceeded</h3>
+            <div class="example-code">
+                <pre>{
+  "message": "Too many requests"
+}</pre>
+            </div>
+
+            <div class="warning-box">
+                <strong>Rate Limiting:</strong> This API is limited to 60 requests per minute per IP address. If you exceed this limit, you'll receive a 429 error. Wait for the rate limit window to reset before making additional requests.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💻 Code Examples</h2>
+            
+            <h3>JavaScript / Fetch API</h3>
+            <div class="example-code">
+                <pre>fetch('https://puaas.sticknologic.is-a.dev/payus/professional')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Message:', data.message);
+    console.log('Tone:', data.tone);
+  })
+  .catch(error => console.error('Error:', error));</pre>
+            </div>
+
+            <h3>cURL</h3>
+            <div class="example-code">
+                <pre>curl https://puaas.sticknologic.is-a.dev/payus/friendly</pre>
+            </div>
+
+            <h3>Python</h3>
+            <div class="example-code">
+                <pre>import requests
+
+response = requests.get('https://puaas.sticknologic.is-a.dev/payus/funny')
+data = response.json()
+print(f"Message: {data['message']}")
+print(f"Tone: {data['tone']}")</pre>
+            </div>
+
+            <h3>PHP</h3>
+            <div class="example-code">
+                <pre>$response = file_get_contents('https://puaas.sticknologic.is-a.dev/payus/frank');
+$data = json_decode($response, true);
+echo "Message: " . $data['message'] . "\n";
+echo "Tone: " . $data['tone'] . "\n";</pre>
+            </div>
+        </div>
+
+        <footer>
+            <p>PayUs-as-a-Service is open source and free to use.</p>
+            <p>
+                <a href="https://github.com/sticknologic/payus-as-a-service" target="_blank">GitHub Repository</a> |
+                <a href="https://github.com/sticknologic/payus-as-a-service/wiki" target="_blank">Documentation</a> |
+                <a href="https://github.com/sticknologic/payus-as-a-service/issues" target="_blank">Report Issues</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Created with 💔 and 💸 by <a href="https://sticknologic.is-a.dev" target="_blank">STICKnoLOGIC</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+
+        async function makeRequest(endpoint, responseId) {
+            const button = event.target;
+            const responseDiv = document.getElementById(`response-${responseId}`);
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.innerHTML = 'Sending...<span class="loading"></span>';
+            
+            // Show response div
+            responseDiv.classList.add('show');
+            responseDiv.innerHTML = '<pre>Loading...</pre>';
+
+            try {
+                const startTime = performance.now();
+                const response = await fetch(API_BASE_URL + endpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const endTime = performance.now();
+                const duration = (endTime - startTime).toFixed(0);
+
+                const data = await response.json();
+                
+                const formattedResponse = {
+                    status: response.status,
+                    statusText: response.statusText,
+                    duration: `${duration}ms`,
+                    headers: {
+                        'content-type': response.headers.get('content-type'),
+                        'x-ratelimit-limit': response.headers.get('x-ratelimit-limit'),
+                        'x-ratelimit-remaining': response.headers.get('x-ratelimit-remaining')
+                    },
+                    body: data
+                };
+
+                responseDiv.innerHTML = `<pre>${JSON.stringify(formattedResponse, null, 2)}</pre>`;
+                
+                // Re-enable button
+                button.disabled = false;
+                button.innerHTML = 'Send Request';
+                
+            } catch (error) {
+                responseDiv.innerHTML = `<pre style="color: #ff6b6b;">Error: ${error.message}</pre>`;
+                button.disabled = false;
+                button.innerHTML = 'Send Request';
+            }
+        }
+
+        // Auto-detect environment on load
+        window.addEventListener('load', () => {
+            console.log('API Base URL:', API_BASE_URL);
+        });
+    </script>
+</body>
+</html>
