@@ -1,8 +1,7 @@
-                                                                            docker-compose.yml
 services:
   nginx:
     image: nginx:alpine
-    container_name: PayUs-Nginx
+    container_name: nginx-puaas
     restart: always
     ports:
       - "9006:80"
