@@ -12,20 +12,9 @@ enum MessageTone: int
     case FRANK = 3;
     case FUNNY = 4;
 
-    public function label(): string
-    {
-        return match ($this) {
-            self::PROFESSIONAL => 'Professional',
-            self::PLAYFUL => 'Playful',
-            self::FRIENDLY => 'Friendly',
-            self::FRANK => 'Frank',
-            self::FUNNY => 'Funny',
-        };
-    }
-
     public static function fromString(string $tone): ?self
     {
-        return match (strtolower($tone)) {
+        return match (mb_strtolower($tone)) {
             'professional' => self::PROFESSIONAL,
             'playful' => self::PLAYFUL,
             'friendly' => self::FRIENDLY,
@@ -47,5 +36,16 @@ enum MessageTone: int
             'frank' => 'Frank',
             'funny' => 'Funny',
         ];
+    }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::PROFESSIONAL => 'Professional',
+            self::PLAYFUL => 'Playful',
+            self::FRIENDLY => 'Friendly',
+            self::FRANK => 'Frank',
+            self::FUNNY => 'Funny',
+        };
     }
 }

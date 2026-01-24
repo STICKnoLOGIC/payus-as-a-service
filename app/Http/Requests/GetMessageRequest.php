@@ -48,7 +48,7 @@ final class GetMessageRequest extends FormRequest
 
     public function getTone(): ?MessageTone
     {
-        if (!$this->has('tone')) {
+        if (! $this->has('tone')) {
             return null;
         }
 

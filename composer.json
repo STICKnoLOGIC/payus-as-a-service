@@ -43,13 +43,12 @@
             "rector",
             "pint"
         ],
+        "phpstan": "phpstan analyse --memory-limit=1G",
         "test:lint": [
             "pint --test",
             "rector --dry-run"
         ],
-        "test:types": [
-            "phpstan"
-        ],
+        "test:types": "@phpstan",
         "test:unit": [
             "@php artisan config:clear --ansi",
             "@php artisan test"

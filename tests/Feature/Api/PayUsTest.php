@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     // Seed some test messages
     Message::factory()->create(['tone' => 0, 'message' => 'Professional message']);
     Message::factory()->create(['tone' => 1, 'message' => 'Playful message']);
@@ -16,7 +16,7 @@ beforeEach(function () {
     Message::factory()->create(['tone' => 4, 'message' => 'Funny message']);
 });
 
-test('get random message without tone parameter returns any message', function () {
+test('get random message without tone parameter returns any message', function (): void {
     $response = $this->getJson('/payus');
 
     $response->assertStatus(200)
@@ -29,42 +29,47 @@ test('get random message without tone parameter returns any message', function (
     expect($response->json('tone'))->toBeString();
 });
 
-test('professional endpoint returns professional message', function () {
+test('professional endpoint returns professional message', function (): void {
     $response = $this->getJson('/payus/professional');
 
     $response->assertStatus(200);
+
     expect($response->json('tone'))->toBe('Professional');
 });
 
-test('playful endpoint returns playful message', function () {
+test('playful endpoint returns playful message', function (): void {
     $response = $this->getJson('/payus/playful');
 
     $response->assertStatus(200);
+
     expect($response->json('tone'))->toBe('Playful');
 });
 
-test('friendly endpoint returns friendly message', function () {
+test('friendly endpoint returns friendly message', function (): void {
     $response = $this->getJson('/payus/friendly');
 
     $response->assertStatus(200);
+
     expect($response->json('tone'))->toBe('Friendly');
 });
 
-test('frank endpoint returns frank message', function () {
+test('frank endpoint returns frank message', function (): void {
     $response = $this->getJson('/payus/frank');
 
     $response->assertStatus(200);
+
     expect($response->json('tone'))->toBe('Frank');
 });
 
-test('funny endpoint returns funny message', function () {
+test('funny endpoint returns funny message', function (): void {
     $response = $this->getJson('/payus/funny');
 
     $response->assertStatus(200);
+
     expect($response->json('tone'))->toBe('Funny');
 });
 
-test('get tones returns all available tones', function () {
+test('get tones returns all available tones', function (): void {
     $response = $this->getJson('/payus/tones');
 
     $response->assertStatus(200)

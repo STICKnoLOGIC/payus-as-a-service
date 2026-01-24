@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\MessageTone;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GetMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Traits\ApiResponse;
@@ -18,7 +17,7 @@ final class PayUsController extends Controller
 
     /**
      * Get a random payment reminder message.
-     * 
+     *
      * @group PayUs
      */
     public function getRandom(): JsonResponse
@@ -28,7 +27,7 @@ final class PayUsController extends Controller
 
     /**
      * Get random professional message.
-     * 
+     *
      * @group PayUs
      */
     public function getProfessional(): JsonResponse
@@ -38,7 +37,7 @@ final class PayUsController extends Controller
 
     /**
      * Get random playful message.
-     * 
+     *
      * @group PayUs
      */
     public function getPlayful(): JsonResponse
@@ -48,7 +47,7 @@ final class PayUsController extends Controller
 
     /**
      * Get random friendly message.
-     * 
+     *
      * @group PayUs
      */
     public function getFriendly(): JsonResponse
@@ -58,7 +57,7 @@ final class PayUsController extends Controller
 
     /**
      * Get random frank message.
-     * 
+     *
      * @group PayUs
      */
     public function getFrank(): JsonResponse
@@ -68,7 +67,7 @@ final class PayUsController extends Controller
 
     /**
      * Get random funny message.
-     * 
+     *
      * @group PayUs
      */
     public function getFunny(): JsonResponse
@@ -78,7 +77,7 @@ final class PayUsController extends Controller
 
     /**
      * Get available tones.
-     * 
+     *
      * @group PayUs
      */
     public function getTones(): JsonResponse
@@ -94,17 +93,17 @@ final class PayUsController extends Controller
     private function getRandomMessage(?MessageTone $tone = null): JsonResponse
     {
         $query = Message::query();
-        
-        if ($tone !== null) {
+
+        if ($tone instanceof MessageTone) {
             $query->where('tone', $tone);
         }
-        
+
         $message = $query->inRandomOrder()->first();
-        
-        if (!$message) {
+
+        if (! $message) {
             return $this->notFound('No messages found for the specified criteria.');
         }
-        
+
         return response()->json(new MessageResource($message));
     }
 }

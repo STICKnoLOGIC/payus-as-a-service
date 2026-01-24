@@ -7,13 +7,14 @@ namespace App\Http\Resources;
 use App\Enums\MessageTone;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $message
- * @property int $tone
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property MessageTone $tone
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 final class MessageResource extends JsonResource
 {
@@ -26,7 +27,7 @@ final class MessageResource extends JsonResource
     {
         return [
             'message' => $this->message,
-            'tone' => $this->tone->label()
+            'tone' => $this->tone->label(),
         ];
     }
 }
