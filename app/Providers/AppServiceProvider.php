@@ -20,6 +20,17 @@ final class AppServiceProvider extends ServiceProvider
         Scramble::ignoreDefaultRoutes();
         Scramble::registerUiRoute('docs');
         Scramble::registerJsonSpecificationRoute('api.json');
+
+        // Enable in all environments (or add condition: if (app()->environment('local', 'production')))
+        Scramble::extendOpenApi(function ($openApi) {
+            $openApi->secure(
+                Scramble::defineSecurityScheme('api_key', [
+                    'type' => 'apiKey',
+                    'in' => 'header',
+                    'name' => 'Authorization',
+                ])
+            );
+        });
     }
 
     /**
