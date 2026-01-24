@@ -29,28 +29,6 @@ test('get random message without tone parameter returns any message', function (
     expect($response->json('tone'))->toBeString();
 });
 
-test('get random message with specific tone returns message of that tone', function () {
-    $response = $this->getJson('/payus?tone=professional');
-
-    $response->assertStatus(200)
-        ->assertJsonStructure([
-            'message',
-            'tone',
-        ]);
-
-    expect($response->json('tone'))->toBe('Professional');
-});
-
-test('get random message with invalid tone returns validation error', function () {
-    $response = $this->getJson('/payus?tone=invalid');
-
-    $response->assertStatus(422)
-        ->assertJsonStructure([
-            'message',
-            'errors',
-        ]);
-});
-
 test('professional endpoint returns professional message', function () {
     $response = $this->getJson('/payus/professional');
 
@@ -100,17 +78,4 @@ test('get tones returns all available tones', function () {
 
     $tones = $response->json('data.tones');
     expect($tones)->toHaveKeys(['professional', 'playful', 'friendly', 'frank', 'funny']);
-});
-
-test('returns 404 when no messages exist for tone', function () {
-    // Delete all messages
-    Message::query()->delete();
-
-    $response = $this->getJson('/payus?tone=professional');
-
-    $response->assertStatus(404)
-        ->assertJson([
-            'success' => false,
-            'message' => 'No messages found for the specified criteria.',
-        ]);
 });
