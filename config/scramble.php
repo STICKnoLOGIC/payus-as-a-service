@@ -145,6 +145,8 @@ Simply call the endpoints to get payment reminder messages in your preferred ton
 
     'middleware' => [
         'web',
+        // Remove or comment out default middleware to allow production access
+        // \Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess::class is applied by default
     ],
 
     'extensions' => [],
