@@ -4,9 +4,29 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'phpunit.xml'
+      - 'phpstan.neon'
+      - 'rector.php'
+      - 'pint.json'
+      - 'tests/**'
+      - '.github/workflows/tests.yml'
   pull_request:
     branches:
       - main
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'phpunit.xml'
+      - 'phpstan.neon'
+      - 'rector.php'
+      - 'pint.json'
+      - 'tests/**'
+      - '.github/workflows/tests.yml'
 
 jobs:
   ci:
