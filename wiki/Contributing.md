@@ -13,26 +13,92 @@ Thank you for considering contributing to PayUs-as-a-Service! We welcome contrib
 The easiest way to contribute! We're always looking for more creative payment reminder messages.
 
 **Steps:**
-1. Edit `messages.json`
-2. Add your messages under the appropriate tone category
-3. Follow the existing style and tone
-4. Submit a pull request
+1. Fork the repository
+2. Edit `messages.json` in the root directory
+3. Add your messages to the appropriate tone category (see tone values below)
+4. Test your changes locally
+5. Submit a pull request
+
+**Message Structure:**
+
+The `messages.json` file contains an array of message objects with two fields:
+```json
+{
+  "message": "Your payment reminder text here",
+  "tone": 0
+}
+```
+
+**Tone Values:**
+- `0` = Professional (formal, business-like)
+- `1` = Playful (witty, engaging)
+- `2` = Friendly (warm, approachable)
+- `3` = Frank (direct, straightforward)
+- `4` = Funny (humorous, lighthearted)
+
+**Example Addition:**
+```json
+[
+  {
+    "message": "We kindly request immediate payment for the outstanding invoice.",
+    "tone": 0
+  },
+  {
+    "message": "Your invoice is doing the cha-cha slide... slide to the payment button!",
+    "tone": 4
+  }
+]
+```
 
 **Message Guidelines:**
 - Keep messages professional and appropriate
-- Maintain the tone's character (professional = formal, funny = humorous, etc.)
+- Maintain the tone's character consistently
 - Keep messages under 200 characters when possible
 - Ensure proper grammar and spelling
-- Avoid offensive or inappropriate content
+- Avoid offensive, discriminatory, or inappropriate content
+- Make sure the tone value matches the message style
+- Test that your JSON is valid (use a JSON validator)
+- **IMPORTANT:** Group messages by tone - keep all messages of the same tone together
 
-**Example:**
+**Message Organization:**
+
+✅ **Correct - Messages grouped by tone:**
 ```json
-{
-  "professional": [
-    "Your new professional message here",
-    "Another professional message"
-  ]
-}
+[
+  {"message": "Professional message 1", "tone": 0},
+  {"message": "Professional message 2", "tone": 0},
+  {"message": "Professional message 3", "tone": 0},
+  {"message": "Playful message 1", "tone": 1},
+  {"message": "Playful message 2", "tone": 1},
+  {"message": "Friendly message 1", "tone": 2}
+]
+```
+
+❌ **Incorrect - Messages mixed randomly:**
+```json
+[
+  {"message": "Professional message", "tone": 0},
+  {"message": "Friendly message", "tone": 2},
+  {"message": "Playful message", "tone": 1},
+  {"message": "Professional message", "tone": 0},
+  {"message": "Funny message", "tone": 4}
+]
+```
+
+**When adding new messages:**
+1. Find the section in `messages.json` with your desired tone
+2. Add your new messages at the end of that tone's group
+3. Keep all messages with the same tone value together
+
+**Testing Your Messages:**
+
+After adding messages, test locally:
+```bash
+# Seed the database with your new messages
+docker compose exec app php artisan migrate:fresh --seed
+
+# Test the API
+curl http://localhost/payus
 ```
 
 ---
@@ -92,9 +158,12 @@ Documentation improvements are always welcome!
 - Update outdated information
 
 **Wiki Contributions:**
-- Edit files in `/wiki` directory
-- Follow existing formatting
-- Submit pull request
+- Edit markdown files in the `/wiki` directory
+- Follow [Wiki Guidelines](WIKI-GUIDELINES) for formatting conventions
+- Use proper internal links: `[Page Name](Page-Name)` (no `.md` extension)
+- Test links work correctly
+- Submit pull request - changes will auto-sync to GitHub Wiki on merge
+- See [GitHub Actions](.github/workflows/wiki-sync.yml) for automation details
 
 ---
 
@@ -133,6 +202,30 @@ cp .env.example .env
 cp sample.env.db .env.db
 ```
 
+Edit `.env.db` for MySQL configuration:
+```env
+MYSQL_ROOT_PASSWORD=your_root_password
+MYSQL_DATABASE=puaas_db
+MYSQL_USER=puaas_user
+MYSQL_PASSWORD=your_password
+```
+
+Edit `.env` and configure your database connection:
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql_puaas
+DB_PORT=3306
+DB_DATABASE=puaas_db
+DB_USERNAME=puaas_user
+DB_PASSWORD=your_password
+```
+
+**Alternative: Using SQLite (No MySQL container needed)**
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/database/database.sqlite
+```
+
 **4. Start Docker containers**
 
 ```bash
@@ -143,25 +236,39 @@ docker compose up -d
 **5. Install dependencies**
 
 ```bash
-docker compose run --rm app composer install
+docker compose exec app composer install
 ```
 
 **6. Generate app key**
 
 ```bash
-docker compose run --rm app php artisan key:generate
+docker compose exec app php artisan key:generate
 ```
 
-**7. Run migrations and seeders**
+**7. Run migrations and seed data**
 
 ```bash
-docker compose run --rm app php artisan migrate:fresh --seed
+# Wait for MySQL to be ready (if using MySQL)
+sleep 10
+
+# Run migrations and seed data
+docker compose exec app php artisan migrate:fresh --seed
 ```
 
-**8. Run tests**
+**Note:** If using SQLite instead, create the database first:
+```bash
+docker compose exec app touch database/database.sqlite
+docker compose exec app php artisan migrate:fresh --seed
+```
+
+**8. Verify installation**
 
 ```bash
-docker compose run --rm app composer test
+# Access the API
+curl http://localhost/payus
+
+# Run tests
+docker compose exec app composer test
 ```
 
 ---
@@ -192,25 +299,38 @@ We use Laravel's coding standards:
 **1. Run Pint (code formatter)**
 
 ```bash
-docker compose run --rm app ./vendor/bin/pint
+docker compose exec app ./vendor/bin/pint
 ```
 
 **2. Run Rector (code modernization)**
 
 ```bash
-docker compose run --rm app ./vendor/bin/rector
+docker compose exec app ./vendor/bin/rector
 ```
 
 **3. Run PHPStan (static analysis)**
 
 ```bash
-docker compose run --rm app ./vendor/bin/phpstan analyse
+docker compose exec app composer phpstan
 ```
 
 **4. Run all checks**
 
 ```bash
-docker compose run --rm app composer test
+# Runs lint, static analysis, and tests
+docker compose exec app composer test
+```
+
+**Individual test commands:**
+```bash
+# Lint only (Pint + Rector)
+docker compose exec app composer lint
+
+# Type checking only
+docker compose exec app composer test:types
+
+# Unit tests only
+docker compose exec app composer test:unit
 ```
 
 **Key Points:**
@@ -228,17 +348,24 @@ All new features should include tests.
 **Create a test:**
 
 ```bash
-docker compose run --rm app php artisan make:test YourFeatureTest
+docker compose exec app php artisan make:test YourFeatureTest
 ```
 
 **Run tests:**
 
 ```bash
-# All tests
-docker compose run --rm app ./vendor/bin/pest
+# All tests with all checks (lint + types + tests)
+docker compose exec app composer test
 
-# Specific test
-docker compose run --rm app ./vendor/bin/pest --filter PayUsTest
+# Unit tests only
+docker compose exec app composer test:unit
+
+# Specific test file
+docker compose exec app php artisan test --filter PayUsTest
+
+# Using Pest directly
+docker compose exec app ./vendor/bin/pest
+docker compose exec app ./vendor/bin/pest --filter=PayUsTest
 ```
 
 **Example Test:**
@@ -390,18 +517,23 @@ git push origin your-branch-name --force-with-lease
 
 ```bash
 # PHP Artisan commands
-docker compose run --rm app php artisan route:list
-docker compose run --rm app php artisan tinker
+docker compose exec app php artisan route:list
+docker compose exec app php artisan tinker
+docker compose exec app php artisan migrate:status
 
 # Composer
-docker compose run --rm app composer require package-name
-docker compose run --rm app composer dump-autoload
+docker compose exec app composer require package-name
+docker compose exec app composer dump-autoload
 
-# Database
+# Database (if using MySQL)
 docker compose exec mysql_puaas mysql -u root -p
 
-# Logs
+# SQLite database access
+docker compose exec app php artisan db
+
+# View logs
 docker compose logs -f app
+docker compose logs -f nginx
 ```
 
 ### Hot Reload (Development)
