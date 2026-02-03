@@ -2,6 +2,8 @@
 
 This guide will help you start using PayUs-as-a-Service in under 5 minutes.
 
+> **💡 Tip:** For detailed API documentation, see the [API Reference](API-Reference) page.
+
 ## Using the Live API
 
 The fastest way to get started is using our hosted API at https://puaas.sticknologic.is-a.dev

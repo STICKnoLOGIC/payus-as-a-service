@@ -1,0 +1,68 @@
+name: Sync Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'wiki/**'
+  workflow_dispatch:
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Checkout wiki repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki-repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Sync wiki files
+        run: |
+          # Remove old files from wiki repo (except .git)
+          find wiki-repo -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          
+          # Copy wiki files from source
+          cp -r wiki/* wiki-repo/
+          
+          # Create _Sidebar.md if it doesn't exist
+          if [ ! -f wiki-repo/_Sidebar.md ]; then
+            cat > wiki-repo/_Sidebar.md << 'EOF'
+          ## Navigation
+          
+          - [Home](Home)
+          - [Getting Started](Getting-Started)
+          - [API Reference](API-Reference)
+          - [Examples](Examples)
+          - [Self-Hosting Guide](Self-Hosting-Guide)
+          - [Troubleshooting](Troubleshooting)
+          - [Contributing](Contributing)
+          
+          ---
+          
+          [📖 Back to Repository](https://github.com/${{ github.repository }})
+          EOF
+          fi
+      
+      - name: Commit and push to wiki
+        working-directory: wiki-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Sync wiki from repository (commit: ${{ github.sha }})"
+            git push origin master
+            echo "Wiki synced successfully!"
+          fi

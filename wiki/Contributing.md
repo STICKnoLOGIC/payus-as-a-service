@@ -2,6 +2,8 @@
 
 Thank you for considering contributing to PayUs-as-a-Service! We welcome contributions from everyone.
 
+> **📖 Resources:** [Main Repository](https://github.com/sticknologic/paynow-as-a-service) | [Self-Hosting Guide](Self-Hosting-Guide) | [API Reference](API-Reference)
+
 ---
 
 ## Ways to Contribute

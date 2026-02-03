@@ -7,6 +7,8 @@
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x-red)](https://laravel.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
+> **📖 [Full Documentation](../../wiki)** | **🚀 [Getting Started](../../wiki/Getting-Started)** | **📚 [API Reference](../../wiki/API-Reference)**
+
 Does it ever happen in your career or personal life that you need to collect money someone owes you? Are you shy, out of words, or don't know how to ask or what tone to use?
 
 Should it be Professional, Friendly, Frank, Funny, or Playful?

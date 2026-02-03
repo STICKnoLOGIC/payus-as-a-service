@@ -2,6 +2,8 @@
 
 Real-world examples of integrating PayUs-as-a-Service into your applications.
 
+> **📘 Prerequisites:** Review the [API Reference](API-Reference) for endpoint details and [Getting Started](Getting-Started) for basics.
+
 ---
 
 ## Table of Contents

@@ -2,6 +2,8 @@
 
 Common issues and solutions when using or self-hosting PayUs-as-a-Service.
 
+> **🎯 Related Pages:** [API Reference](API-Reference) | [Self-Hosting Guide](Self-Hosting-Guide) | [Getting Started](Getting-Started)
+
 ---
 
 ## API Usage Issues

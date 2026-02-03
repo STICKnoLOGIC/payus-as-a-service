@@ -2,6 +2,8 @@
 
 Complete guide to running your own instance of PayUs-as-a-Service.
 
+> **🔗 Related:** [Getting Started](Getting-Started) | [Troubleshooting](Troubleshooting) | [Contributing](Contributing)
+
 ## Why Self-Host?
 
 - **Privacy:** Keep all data on your own servers

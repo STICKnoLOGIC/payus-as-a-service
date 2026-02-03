@@ -2,6 +2,8 @@
 
 Welcome to the PayUs-as-a-Service documentation! 
 
+> **📚 [View Main Repository](https://github.com/sticknologic/paynow-as-a-service)** | **📖 [README](https://github.com/sticknologic/paynow-as-a-service#readme)**
+
 ## What is PayUs-as-a-Service?
 
 PayUs-as-a-Service (PUaaS) is a free, open-source API that generates randomized payment reminder messages in various tones. Perfect for developers who need to send past-due invoice reminders but want to maintain different communication styles.
