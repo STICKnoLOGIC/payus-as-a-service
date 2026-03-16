@@ -582,19 +582,7 @@ echo "Tone: " . $data['tone'] . "\n";</pre>
 
                 const data = await response.json();
                 
-                const formattedResponse = {
-                    status: response.status,
-                    statusText: response.statusText,
-                    duration: `${duration}ms`,
-                    headers: {
-                        'content-type': response.headers.get('content-type'),
-                        'x-ratelimit-limit': response.headers.get('x-ratelimit-limit'),
-                        'x-ratelimit-remaining': response.headers.get('x-ratelimit-remaining')
-                    },
-                    body: data
-                };
-
-                responseDiv.innerHTML = `<pre>${JSON.stringify(formattedResponse, null, 2)}</pre>`;
+                responseDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
                 
                 // Re-enable button
                 button.disabled = false;
