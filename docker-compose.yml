@@ -22,7 +22,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: laravel-puaas
-      MYSQL_USER: root
+      MYSQL_USER: user-puaas
       MYSQL_PASSWORD: rootpassword
     volumes:
       - dbdata:/var/lib/mysql
