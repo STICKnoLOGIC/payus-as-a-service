@@ -4,7 +4,7 @@ FROM serversideup/php:8.4-fpm-nginx-alpine
 WORKDIR /var/www/html
 
 # Copy application files
-COPY --chown=www-data:www-data . .
+COPY --chown=coolify:coolify . .
 
 # copy env file to the container
 RUN [ -f .env ] || cp .env.example .env
@@ -14,4 +14,4 @@ RUN [ -f .env ] || cp .env.example .env
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # Fix permissions (Laravel)
-RUN chown -R www-data:www-data /var/www/html && chmod -R 775 storage bootstrap/cache
+RUN chown -R coolify:coolify /var/www/html && chmod -R 775 storage bootstrap/cache

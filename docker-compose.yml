@@ -14,6 +14,11 @@ services:
       - ./:/var/www/html
     depends_on:
       - mysql_puaas
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.rule=Host(`puaas.sticknologic.is-a.dev`)
+      - traefik.http.routers.app.entrypoints=websecure
+      - traefik.http.routers.app.tls.certresolver=letsencrypt
 
   mysql_puaas:
     image: mysql:latest
