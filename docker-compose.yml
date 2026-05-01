@@ -19,10 +19,18 @@ services:
     image: mysql:latest
     container_name: puaas-mysql
     restart: unless-stopped
-    env_file:
-      - .env.db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: laravel-puaas
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpassword
     volumes:
       - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   dbdata:

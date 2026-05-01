@@ -129,7 +129,6 @@ cd payus-as-a-service
 **Step 2:** Set up environment files
 ```bash
 cp .env.example .env
-cp sample.env.db .env.db
 ```
 
 **Step 3:** Build and start Docker containers
@@ -138,27 +137,17 @@ docker compose build
 docker compose up -d
 ```
 
-**Step 4:** Install PHP dependencies
-```bash
-docker compose run --rm app composer install
-```
-
-**Step 5:** Generate application security key
+**Step 4:** Generate application security key
 ```bash
 docker compose run --rm app php artisan key:generate
 ```
 
-**Step 6:** Set up database with sample messages (includes 1,500 messages across all tones)
-```bash
-docker compose run --rm app php artisan migrate:fresh --seed --force
-```
-
-**Step 7:** Run tests to verify everything works
+**Step 5:** (Opttional) Run tests to verify everything works
 ```bash
 docker compose run --rm app ./vendor/bin/pest
 ```
 
-**Step 8:** Access your API
+**Step 6:** Access your API
 - API: `http://localhost:9006/payus`
 - Documentation: `http://localhost:9006/docs`
 
@@ -174,7 +163,6 @@ composer install
 **Step 2:** Configure environment
 ```bash
 cp .env.example .env
-php artisan key:generate
 ```
 
 **Step 3:** Set up database (SQLite by default - easiest option)
@@ -253,7 +241,6 @@ laravel-api-kit/
 │       └── PayUsTest.php                   # API tests
 ├── docker-compose.yml
 ├── Dockerfile
-├── CLAUDE.md                              # AI assistant instructions
 └── messages.json                          # 1500 messages (300 messages per tone)
 ```
 

@@ -6,9 +6,6 @@ WORKDIR /var/www/html
 # Copy application files
 COPY --chown=www-data:www-data . .
 
-# Copy sample.env.db file to the container
-RUN [ -f .env.db ] || cp sample.env.db .env.db
-
 # copy env file to the container
 RUN [ -f .env ] || cp .env.example .env
 
