@@ -12,8 +12,6 @@ RUN [ -f .env.db ] || cp sample.env.db .env.db
 # copy env file to the container
 RUN [ -f .env ] || cp .env.example .env
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install PHP dependencies (optimized for production)
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
