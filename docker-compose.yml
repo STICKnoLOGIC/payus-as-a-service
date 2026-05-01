@@ -1,5 +1,6 @@
 services:
   app:
+    user: "www-data"
     build:
       context: .
       dockerfile: Dockerfile
