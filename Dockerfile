@@ -12,6 +12,9 @@ RUN [ -f .env.db ] || cp sample.env.db .env.db
 # copy env file to the container
 RUN [ -f .env ] || cp .env.example .env
 
+RUN mkdir -p storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 # Install PHP dependencies (optimized for production)
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
