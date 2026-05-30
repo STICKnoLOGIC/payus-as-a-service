@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
-const { createServer, toneLabels } = require('../server');
+const { createServer, toneLabels } = require('../index');
 
 async function withServer(callback) {
   const server = createServer();
