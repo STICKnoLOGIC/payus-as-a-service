@@ -3,25 +3,16 @@
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
 /.fleet
-/.idea
-/.nova
-/.phpunit.cache
+.idea
+.nova
 /.vscode
 /.zed
-/auth.json
-/tmp
 /node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
+/tmp
+/coverage
+/dist
+/build
 Thumbs.db
 
 # Backmark task tracking
@@ -30,6 +21,3 @@ Thumbs.db
 # Claude Code settings
 /.claude/
 CLAUDE.md
-
-# SQLite databases
-database/*.sqlite
